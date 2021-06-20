@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  node-one:
+    container_name: node-one-container
+    restart: always
+    build: ./node-1
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./node-1:/app
+    command: npm start
+  node-two:
+    container_name: node-two-container
+    restart: always
+    build: ./node-2
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./node-2:/app
+    command: npm start
+  node-three:
+    container_name: node-three-container
+    restart: always
+    build: ./node-3
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./node-3:/app
+    command: npm start
+volumes:
+  node-1:
+  node-2:
+  node-3:
