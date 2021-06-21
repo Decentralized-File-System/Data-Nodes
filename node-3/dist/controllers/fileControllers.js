@@ -18,8 +18,10 @@ const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     //@ts-ignore
     const buffer = req.files.file.data;
     const data = JSON.parse(buffer.toString());
-    fs_1.default.writeFile(`${__dirname}/../../files/${data.fileId}.json`, JSON.stringify(data), (err) => {
+    const writableStream = fs_1.default.createWriteStream(`${__dirname}/../../files/${data.fileId}.json`);
+    writableStream.write(JSON.stringify(data), (err) => {
         if (err) {
+            console.log(err);
             res.status(500).json({ error: err });
         }
         else {
@@ -27,6 +29,18 @@ const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(200).json({ message: "Success uploading file" });
         }
     });
+    // fs.writeFile(
+    //   `${__dirname}/../../files/${data.fileId}.json`,
+    //   JSON.stringify(data),
+    //   (err) => {
+    //     if (err) {
+    //       res.status(500).json({ error: err });
+    //     } else {
+    //       console.log("success");
+    //       res.status(200).json({ message: "Success uploading file" });
+    //     }
+    //   }
+    // );
 });
 exports.uploadFile = uploadFile;
 const downloadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
