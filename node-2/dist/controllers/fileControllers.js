@@ -13,34 +13,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.downloadFile = exports.uploadFile = void 0;
-const fs_1 = __importDefault(require("fs"));
+const fs_extra_1 = __importDefault(require("fs-extra"));
 const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //@ts-ignore
-    const buffer = req.files.file.data;
-    const data = JSON.parse(buffer.toString());
-    const writableStream = fs_1.default.createWriteStream(`${__dirname}/../../files/${data.fileId}.json`);
-    writableStream.write(JSON.stringify(data), (err) => {
-        if (err) {
-            console.log(err);
+    req.pipe(req.busboy);
+    const { fileId } = req.query;
+    req.busboy.on("file", (fieldName, file, filename) => {
+        console.log(`Upload of '${fileId}' started`);
+        // Create a write stream of the new file
+        const fStream = fs_extra_1.default.createWriteStream(`${__dirname}/../../files/${fileId}`);
+        // Pipe it trough
+        file.pipe(fStream);
+        // On finish of the upload
+        fStream.on("close", () => __awaiter(void 0, void 0, void 0, function* () {
+            console.log(`Upload of '${fileId}' finished`);
+            res.status(200).send("success");
+        }));
+        fStream.on("error", (err) => {
             res.status(500).json({ error: err });
-        }
-        else {
-            console.log("success");
-            res.status(200).json({ message: "Success uploading file" });
-        }
+        });
     });
-    // fs.writeFile(
-    //   `${__dirname}/../../files/${data.fileId}.json`,
-    //   JSON.stringify(data),
-    //   (err) => {
-    //     if (err) {
-    //       res.status(500).json({ error: err });
-    //     } else {
-    //       console.log("success");
-    //       res.status(200).json({ message: "Success uploading file" });
-    //     }
-    //   }
-    // );
 });
 exports.uploadFile = uploadFile;
 const downloadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

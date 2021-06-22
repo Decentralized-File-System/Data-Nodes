@@ -1,36 +1,28 @@
 import { Request, Response } from "express";
-import fs from "fs";
+import fs from "fs-extra";
 
 const uploadFile = async (req: Request, res: Response) => {
-  //@ts-ignore
-  const buffer = req.files.file.data;
-  const data = JSON.parse(buffer.toString());
-  const writableStream = fs.createWriteStream(
-    `${__dirname}/../../files/${data.fileId}.json`
-  );
+  req.pipe(req.busboy);
+  const { fileId } = req.query;
 
-  writableStream.write(JSON.stringify(data), (err) => {
-    if (err) {
-      console.log(err);
+  req.busboy.on("file", (fieldName, file, filename) => {
+    console.log(`Upload of '${fileId}' started`);
+
+    // Create a write stream of the new file
+    const fStream = fs.createWriteStream(`${__dirname}/../../files/${fileId}`);
+    // Pipe it trough
+    file.pipe(fStream);
+
+    // On finish of the upload
+    fStream.on("close", async () => {
+      console.log(`Upload of '${fileId}' finished`);
+      res.status(200).send("success");
+    });
+
+    fStream.on("error", (err) => {
       res.status(500).json({ error: err });
-    } else {
-      console.log("success");
-      res.status(200).json({ message: "Success uploading file" });
-    }
+    });
   });
-
-  // fs.writeFile(
-  //   `${__dirname}/../../files/${data.fileId}.json`,
-  //   JSON.stringify(data),
-  //   (err) => {
-  //     if (err) {
-  //       res.status(500).json({ error: err });
-  //     } else {
-  //       console.log("success");
-  //       res.status(200).json({ message: "Success uploading file" });
-  //     }
-  //   }
-  // );
 };
 
 const downloadFile = async (req: Request, res: Response) => {
