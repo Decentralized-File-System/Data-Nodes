@@ -3,13 +3,15 @@ import fs from "fs-extra";
 
 const uploadFile = async (req: Request, res: Response) => {
   req.pipe(req.busboy);
-  const { fileId } = req.query;
+  const { fileId, index } = req.query;
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${fileId}' started`);
 
     // Create a write stream of the new file
-    const fStream = fs.createWriteStream(`${__dirname}/../../files/${fileId}`);
+    const fStream = fs.createWriteStream(
+      `${__dirname}/../../files/${fileId}\/${index}`
+    );
     // Pipe it trough
     file.pipe(fStream);
 

@@ -16,11 +16,11 @@ exports.downloadFile = exports.uploadFile = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     req.pipe(req.busboy);
-    const { fileId } = req.query;
+    const { fileId, index } = req.query;
     req.busboy.on("file", (fieldName, file, filename) => {
         console.log(`Upload of '${fileId}' started`);
         // Create a write stream of the new file
-        const fStream = fs_extra_1.default.createWriteStream(`${__dirname}/../../files/${fileId}`);
+        const fStream = fs_extra_1.default.createWriteStream(`${__dirname}/../../files/${fileId}\/${index}`);
         // Pipe it trough
         file.pipe(fStream);
         // On finish of the upload
