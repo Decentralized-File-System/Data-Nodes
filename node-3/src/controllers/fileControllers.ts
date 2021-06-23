@@ -10,7 +10,19 @@ const uploadFile = async (req: Request, res: Response) => {
 
     // Create a write stream of the new file
     const fStream = fs.createWriteStream(
-      `${__dirname}/../../files/${fileId}\/${index}`
+      `${__dirname}/../../files/${fileId}=
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      ${index}`
     );
     // Pipe it trough
     file.pipe(fStream);

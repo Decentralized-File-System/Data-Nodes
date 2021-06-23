@@ -20,7 +20,7 @@ const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     req.busboy.on("file", (fieldName, file, filename) => {
         console.log(`Upload of '${fileId}' started`);
         // Create a write stream of the new file
-        const fStream = fs_extra_1.default.createWriteStream(`${__dirname}/../../files/${fileId}\/${index}`);
+        const fStream = fs_extra_1.default.createWriteStream(`${__dirname}/../../files/${fileId}=${index}`);
         // Pipe it trough
         file.pipe(fStream);
         // On finish of the upload
@@ -29,6 +29,8 @@ const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.status(200).send("success");
         }));
         fStream.on("error", (err) => {
+            console.log("err");
+            console.log(err);
             res.status(500).json({ error: err });
         });
     });

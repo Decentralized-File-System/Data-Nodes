@@ -7,10 +7,9 @@ const uploadFile = async (req: Request, res: Response) => {
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${fileId}' started`);
-
     // Create a write stream of the new file
     const fStream = fs.createWriteStream(
-      `${__dirname}/../../files/${fileId}\/${index}`
+      `${__dirname}/../../files/${fileId}=${index}`
     );
     // Pipe it trough
     file.pipe(fStream);
@@ -22,6 +21,8 @@ const uploadFile = async (req: Request, res: Response) => {
     });
 
     fStream.on("error", (err) => {
+      console.log("err")
+      console.log(err)
       res.status(500).json({ error: err });
     });
   });
