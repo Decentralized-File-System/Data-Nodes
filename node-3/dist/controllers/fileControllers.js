@@ -35,8 +35,8 @@ const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.uploadFile = uploadFile;
 const downloadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { fileId } = req.query;
-    res.status(200).download(`${__dirname}/../../files/${fileId}.json`, (err) => {
+    const { fileId, index } = req.query;
+    res.status(200).download(`${__dirname}/../../files/${fileId}=${index}`, (err) => {
         if (err) {
             return res.status(400).json({ error: err });
         }

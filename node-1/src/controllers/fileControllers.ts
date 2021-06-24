@@ -29,8 +29,8 @@ const uploadFile = async (req: Request, res: Response) => {
 };
 
 const downloadFile = async (req: Request, res: Response) => {
-  const { fileId } = req.query;
-  res.status(200).download(`${__dirname}/../../files/${fileId}.json`, (err) => {
+  const { fileId, index } = req.query;
+  res.status(200).download(`${__dirname}/../../files/${fileId}=${index}`, (err) => {
     if (err) {
       return res.status(400).json({ error: err });
     }
