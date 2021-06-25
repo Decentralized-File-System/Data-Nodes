@@ -14,10 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.downloadFile = exports.uploadFile = void 0;
 const fs_extra_1 = __importDefault(require("fs-extra"));
-const FormData = require("form-data");
 const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     req.pipe(req.busboy);
     const { fileId, index } = req.query;
+    console.log(fileId);
+    console.log(index);
     req.busboy.on("file", (fieldName, file, filename) => {
         console.log(`Upload of '${fileId}' started`);
         // Create a write stream of the new file
