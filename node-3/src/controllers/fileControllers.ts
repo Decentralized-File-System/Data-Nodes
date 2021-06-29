@@ -41,4 +41,24 @@ const downloadFile = async (req: Request, res: Response) => {
   }
 };
 
-export { uploadFile, downloadFile };
+const deleteFile = async (req: Request, res: Response) => {
+  const { fileId }: any = req.query;
+  try {
+    const files = fs.readdirSync(`${__dirname}/../../files`);
+    const filesToDelete = files.map((fileName) => {
+      if (fileName.includes(fileId)) {
+        return fileName;
+      }
+    });
+    const filtered = filesToDelete.filter((str) => str != undefined);
+    filtered.forEach((file) => {
+      fs.unlinkSync(`${__dirname}/../../files/${file}`);
+    });
+    res.status(200).json({ message: "Success deleting" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting" });
+  }
+};
+
+
+export { uploadFile, downloadFile, deleteFile };

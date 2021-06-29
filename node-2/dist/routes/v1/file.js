@@ -12,4 +12,5 @@ router.use(connect_busboy_1.default({
 }));
 router.post("/upload-file", fileControllers_1.uploadFile);
 router.get("/download-file", fileControllers_1.downloadFile);
+router.delete("/", fileControllers_1.deleteFile);
 exports.default = router;
