@@ -11,3 +11,5 @@ COPY . /app/
 EXPOSE 5001
 
 RUN npm run build
+
+CMD [ "npm", "start" ]
